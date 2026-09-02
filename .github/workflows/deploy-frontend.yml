@@ -2,37 +2,21 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    branches: ["main"]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '18'
+          
+      - run: cd frontend && npm install --legacy-peer-deps && npm run build
       
-      - name: Install Dependencies
-        run: |
-          cd frontend
-          npm install --legacy-peer-deps
-      
-      - name: Build
-        run: |
-          cd frontend
-          npm run build
-        env:
-          CI: false
-      
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./frontend/build
