@@ -3,14 +3,21 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from decouple import config
 
-# Database configuration
-DATABASE_URL = config("DATABASE_URL", default="mysql+pymysql://root:root123@localhost:3306/school_db")
+DATABASE_URL = config("DATABASE_URL")
 
-engine = create_engine(DATABASE_URL)
+# For Aiven MySQL with SSL
+engine = create_engine(
+    DATABASE_URL,
+    connect_args={
+        "ssl": {
+            "ssl-ca": "/path/to/ca.pem"  # Download from Aiven
+        }
+    } if "aivencloud.com" in DATABASE_URL else {}
+)
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# Dependency to get DB session
 def get_db():
     db = SessionLocal()
     try:
