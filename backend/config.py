@@ -3,8 +3,8 @@ from decouple import config
 # Email Configuration
 EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
 EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
-EMAIL_USER = config("EMAIL_USER", default="your-email@gmail.com")
-EMAIL_PASSWORD = config("EMAIL_PASSWORD", default="your-app-password")
+EMAIL_USER = config("EMAIL_USER", default="salaaudeenahmed5@gmail.com")
+EMAIL_PASSWORD = config("EMAIL_PASSWORD", default="Salaaudeen_#1234")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
 
 # Google Drive Backup

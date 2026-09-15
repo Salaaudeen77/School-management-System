@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
+/* eslint-disable no-unused-vars */
+
 const Dashboard = () => {
   const theme = useTheme();
   const navigate = useNavigate();

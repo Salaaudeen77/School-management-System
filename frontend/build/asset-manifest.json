@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/School-management-System/static/css/main.fa70b96e.css",
+    "main.js": "/School-management-System/static/js/main.ab03b787.js",
+    "static/js/453.3852239a.chunk.js": "/School-management-System/static/js/453.3852239a.chunk.js",
+    "index.html": "/School-management-System/index.html",
+    "main.fa70b96e.css.map": "/School-management-System/static/css/main.fa70b96e.css.map",
+    "main.ab03b787.js.map": "/School-management-System/static/js/main.ab03b787.js.map",
+    "453.3852239a.chunk.js.map": "/School-management-System/static/js/453.3852239a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fa70b96e.css",
+    "static/js/main.ab03b787.js"
+  ]
+}

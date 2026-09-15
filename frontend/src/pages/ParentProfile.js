@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
+
+/* eslint-disable no-unused-vars */
 
 const ParentProfile = () => {
   const { id } = useParams();
@@ -11,11 +13,7 @@ const ParentProfile = () => {
   const [children, setChildren] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchParentData();
-  }, [id]);
-
-  const fetchParentData = async () => {
+  const fetchParentData = useCallback(async () => {
     try {
       const parentRes = await api.get(`/api/parents/${id}`);
       setParent(parentRes.data);
@@ -28,7 +26,11 @@ const ParentProfile = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, navigate]);
+
+  useEffect(() => {
+    fetchParentData();
+  }, [fetchParentData]);
 
   if (loading) {
     return (

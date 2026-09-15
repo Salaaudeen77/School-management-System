@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
+
+/* eslint-disable no-unused-vars */
 
 const TeacherProfile = () => {
   const { id } = useParams();
@@ -11,21 +13,21 @@ const TeacherProfile = () => {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
 
-  useEffect(() => {
-    fetchTeacherData();
-  }, [id]);
+const fetchTeacherData = useCallback(async () => {
+  try {
+    const teacherRes = await api.get(`/api/teachers/${id}`);
+    setTeacher(teacherRes.data);
+  } catch (error) {
+    console.error('Failed to fetch teacher data:', error);
+    navigate('/teachers');
+  } finally {
+    setLoading(false);
+  }
+}, [id, navigate]);
 
-  const fetchTeacherData = async () => {
-    try {
-      const teacherRes = await api.get(`/api/teachers/${id}`);
-      setTeacher(teacherRes.data);
-    } catch (error) {
-      console.error('Failed to fetch teacher data:', error);
-      navigate('/teachers');
-    } finally {
-      setLoading(false);
-    }
-  };
+useEffect(() => {
+  fetchTeacherData();
+}, [fetchTeacherData]);
 
   const handlePhotoUpload = async (e) => {
     const file = e.target.files[0];

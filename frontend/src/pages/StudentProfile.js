@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
+
+/* eslint-disable no-unused-vars */
 
 const StudentProfile = () => {
   const { id } = useParams();
@@ -19,13 +21,7 @@ const StudentProfile = () => {
   const [selectedParentId, setSelectedParentId] = useState('');
   const [relationshipType, setRelationshipType] = useState('guardian');
 
-  useEffect(() => {
-    fetchStudentData();
-    fetchParents();
-    fetchLinkedParents();
-  }, [id]);
-
-  const fetchStudentData = async () => {
+  const fetchStudentData = useCallback(async () => {
     try {
       const [studentRes, marksRes, attendanceRes, paymentsRes] = await Promise.all([
         api.get(`/api/students/${id}`),
@@ -44,18 +40,18 @@ const StudentProfile = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, navigate]);
 
-  const fetchParents = async () => {
+  const fetchParents = useCallback(async () => {
     try {
       const response = await api.get('/api/parents/');
       setParents(response.data);
     } catch (error) {
       console.error('Failed to fetch parents:', error);
     }
-  };
+  }, []);
 
-  const fetchLinkedParents = async () => {
+  const fetchLinkedParents = useCallback(async () => {
     try {
       // ✅ Correct endpoint
       const response = await api.get(`/api/parent-students/students/${id}/parents`);
@@ -64,7 +60,13 @@ const StudentProfile = () => {
       console.error('Failed to fetch linked parents:', error);
       setLinkedParents([]);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchStudentData();
+    fetchParents();
+    fetchLinkedParents();
+  }, [fetchStudentData, fetchParents, fetchLinkedParents]);
 
   const handleLinkParent = async () => {
     if (!selectedParentId) {

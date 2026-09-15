@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 
+/* eslint-disable no-unused-vars */
+
 const Grades = () => {
   const [marks, setMarks] = useState([]);
   const [students, setStudents] = useState([]);
