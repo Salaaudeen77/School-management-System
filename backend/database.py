@@ -2,19 +2,20 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from decouple import config
+import os
 
 DATABASE_URL = config("DATABASE_URL")
 
-# For Aiven MySQL with SSL
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={
+# Configure SSL for Aiven
+connect_args = {}
+if "aivencloud.com" in DATABASE_URL:
+    connect_args = {
         "ssl": {
-            "ssl-ca": "/path/to/ca.pem"  # Download from Aiven
+            "ca": "ca.pem"  # This must match the Secret File name
         }
-    } if "aivencloud.com" in DATABASE_URL else {}
-)
+    }
 
+engine = create_engine(DATABASE_URL, connect_args=connect_args)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
