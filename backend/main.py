@@ -43,6 +43,7 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 # Import routers
 from routers import classes, students, teachers, parents, fees, attendance, grades, timetable, announcements, reports, promotions, fee_structures
 from routers import parent_students
+from seed_route import router as seed_router
 from routers import subjects
 
 app.include_router(students.router, prefix="/api/students", tags=["Students"])
@@ -59,7 +60,7 @@ app.include_router(classes.router, prefix="/api/classes", tags=["Classes"])
 app.include_router(subjects.router, prefix="/api/subjects", tags=["Subjects"])
 app.include_router(promotions.router, prefix="/api/promotions", tags=["Promotions"])
 app.include_router(fee_structures.router, prefix="/api/fee-structures", tags=["Fee Structures"])
-# Root endpoint
+app.include_router(seed_router, prefix="/api/admin-setup", tags=["Setup"])
 @app.get("/")
 def root():
     return {"message": "School Management System API is running", "status": "healthy"}
